@@ -1,5 +1,8 @@
 
 
+from models.item import Item
+
+
 class Database():
     def __init__(self):
         self.data = []
@@ -7,7 +10,7 @@ class Database():
     def list(self):
         return self.data
     
-    def add(self, item):
+    def add(self, item: Item):
         self.data.append(item)
 
     def remove(self, id):
