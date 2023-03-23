@@ -23,7 +23,7 @@ async def create_item(item: Item):
         raise HTTPException(status_code=status_code, detail=error_message)
     
 @app.put("/{item_id}")
-async def update_item(item_id: uuid, item: Item):
+async def update_item(item_id: uuid.UUID, item: Item):
     try:
         db.update(item_id, item)
         return { 'message': 'Item updated' }

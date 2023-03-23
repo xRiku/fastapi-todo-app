@@ -6,7 +6,7 @@ from id_generator import IDGenerator
 id_generator = IDGenerator()
 
 class Item(BaseModel):
-    item_id: uuid.UUID = Field(default_factory=uuid.uuid4, editable=False)
+    id: uuid.UUID = Field(default_factory=uuid.uuid4, editable=False)
     title: str
     checked: bool = Field(default=False, editable=False)
     created_at: str = Field(default_factory=lambda: datetime.now().isoformat(), editable=False)

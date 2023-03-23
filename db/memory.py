@@ -15,13 +15,16 @@ class Database():
     def add(self, item: Item):
         self.data.append(item)
 
-    def update(self, id: uuid, title: str):
-        for i, value in enumerate(self.data):
-            if value['id'] == id:
-                self.data[i]['title'] = title
-                self.data[i]['updated_at'] = datetime.now().isoformat()
+    def update(self, id: uuid.UUID, item: Item):
+        try:
+            for i, value in enumerate(self.data):
+                if value.id == id:
+                    self.data[i] = item
+                    self.data[i].updated_at = datetime.now().isoformat()
+        except Exception as e:
+            print(e)
 
-    def remove(self, id: uuid):
+    def remove(self, id: uuid.UUID):
         self.data = { item for item in self.data if item['id'] != id }
 
 db = Database()
