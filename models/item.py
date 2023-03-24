@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import Optional
 import uuid
 from pydantic import BaseModel, Field
 from id_generator import IDGenerator
@@ -13,3 +14,8 @@ class Item(BaseModel):
     deleted_at: str = Field(default=None, editable=False)
     updated_at: str = Field(default=None, editable=False)
     position: int = Field(default_factory=id_generator.get_next_id, editable=False) 
+
+
+class ItemUpdate(BaseModel):
+    title: Optional[str] = Field(None)
+    checked: Optional[bool] = Field(None)

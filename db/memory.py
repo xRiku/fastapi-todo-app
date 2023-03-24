@@ -15,11 +15,12 @@ class Database():
     def add(self, item: Item):
         self.data.append(item)
 
-    def update(self, id: uuid.UUID, item: Item):
+    def update(self, id: uuid.UUID, fields: dict):
         try:
             for i, value in enumerate(self.data):
                 if value.id == id:
-                    self.data[i] = item
+                    for field, new_value in fields.items():
+                        setattr(self.data[i], field, new_value)
                     self.data[i].updated_at = datetime.now().isoformat()
         except Exception as e:
             print(e)
