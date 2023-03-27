@@ -1,7 +1,8 @@
-from fastapi import FastAPI
+import uuid
+from fastapi import FastAPI, HTTPException
 from db.memory import db
 from id_generator import IDGenerator
-from models.item import Item
+from models.item import Item, ItemUpdate
 
 app = FastAPI()
 id_generator = IDGenerator()
@@ -17,6 +18,16 @@ async def create_item(item: Item):
         db.add(item)
         return { 'message': 'Item created' }
     except Exception as e:
-        print(e)
         status_code = 500
-        return { 'message': 'Error creating item' }
+        error_message =  { 'message': 'Error creating item',  'error': str(e)}
+        raise HTTPException(status_code=status_code, detail=error_message)
+    
+@app.put("/{item_id}")
+async def update_item(item_id: uuid.UUID, item_update: ItemUpdate):
+    try:
+        db.update(item_id, item_update.dict(exclude_unset=True))
+        return { 'message': 'Item updated' }
+    except Exception as e:
+        status_code = 500
+        error_message =  { 'message': 'Error updating item', 'error': str(e)}
+        raise HTTPException(status_code=status_code, detail=error_message)
