@@ -10,9 +10,9 @@ class Item(BaseModel):
     id: uuid.UUID = Field(default_factory=uuid.uuid4, editable=False)
     title: str
     checked: bool = Field(default=False, editable=False)
-    created_at: str = Field(default_factory=lambda: datetime.now().isoformat(), editable=False)
-    deleted_at: str = Field(default=None, editable=False)
-    updated_at: str = Field(default=None, editable=False)
+    created_at: datetime = Field(default_factory=lambda: datetime.now().isoformat(), editable=False)
+    deleted_at: datetime = Field(default=None, editable=False)
+    updated_at: datetime = Field(default=None, editable=False)
     position: int = Field(default_factory=id_generator.get_next_id, editable=False) 
 
 
