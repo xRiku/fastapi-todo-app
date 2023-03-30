@@ -9,13 +9,17 @@ class Database():
     def __init__(self):
         self.data = []
 
-    def list(self):
+    def is_inside(self, id: uuid.UUID) -> bool:
+        return id in [item.id for item in self.data]
+
+
+    def list_all(self) -> list[Item]:
         return self.data
     
-    def add(self, item: Item):
+    def add(self, item: Item) -> None:
         self.data.append(item)
 
-    def update(self, id: uuid.UUID, fields: dict):
+    def update(self, id: uuid.UUID, fields: dict) -> None:
         try:
             for i, value in enumerate(self.data):
                 if value.id == id:
@@ -25,7 +29,7 @@ class Database():
         except Exception as e:
             print(e)
 
-    def remove(self, id: uuid.UUID):
+    def remove(self, id: uuid.UUID) -> None:
         self.data = { item for item in self.data if item['id'] != id }
 
 db = Database()
