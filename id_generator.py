@@ -8,3 +8,6 @@ class IDGenerator:
     def get_previous_id(self: int) -> int:
         self.current_id -= 1
         return self.current_id
+
+    def reset(self: int) -> None:
+        self.current_id = 0
