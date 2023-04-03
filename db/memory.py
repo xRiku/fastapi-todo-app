@@ -1,6 +1,6 @@
 from datetime import datetime
 import uuid
-from models.item import Item
+from models.item import Item, id_generator
 
 
 class Database:
@@ -33,6 +33,10 @@ class Database:
         for i, value in enumerate(self.data):
             if value.id == id:
                 self.data[i].deleted_at = datetime.now().isoformat()
+
+    def wipe(self) -> None:
+        self.data = []
+        id_generator.reset()
 
 
 db = Database()
