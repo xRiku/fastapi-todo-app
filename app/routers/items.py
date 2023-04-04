@@ -1,7 +1,7 @@
 import uuid
 from fastapi import APIRouter, HTTPException
 from db.memory import db
-from models.item import Item, ItemUpdate
+from models.item import Item, ItemCreate, ItemUpdate
 
 router = APIRouter(prefix="/items", tags=["items"])
 
@@ -12,12 +12,14 @@ async def list_items(deleted_at: bool = False) -> list[Item]:
 
 
 @router.post("/", status_code=201)
-async def create_item(item: Item) -> dict:
+async def create_item(item: ItemCreate) -> dict:
     try:
-        db.add(item)
-        return {"message": "Item created", "item": item.dict()}
+        db_item = Item(**item.dict())
+        db.add(db_item)
+        return {"message": "Item created", "item": db_item.dict()}
+
     except Exception as e:
-        status_code = 500
+        status_code = 422
         error_message = {"message": "Error creating item", "error": str(e)}
         raise HTTPException(status_code=status_code, detail=error_message)
 
