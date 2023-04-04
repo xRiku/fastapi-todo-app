@@ -9,16 +9,13 @@ def test_list_items(reset_db, client):
         },
     )
     response = client.get("/items/")
-
+    items = response.json()
     assert response.status_code == 200
-    assert response.json() == [
-        {
-            "id": response.json()[0]["id"],
-            "title": "Test item",
-            "checked": False,
-            "created_at": response.json()[0]["created_at"],
-            "deleted_at": None,
-            "updated_at": None,
-            "position": 1,
-        }
-    ]
+    assert len(items) == 1
+    assert items[0]["title"] == "Test item"
+    assert items[0]["checked"] is False
+    assert items[0]["position"] == 1
+    assert items[0]["created_at"] is not None
+    assert items[0]["updated_at"] is None
+    assert items[0]["deleted_at"] is None
+    assert items[0]["id"] is not None
