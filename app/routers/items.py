@@ -26,10 +26,20 @@ async def create_item(item: ItemCreate) -> dict:
 
 @router.put("/{item_id}")
 async def update_item(item_id: uuid.UUID, item_update: ItemUpdate) -> dict:
+    if item_update.dict(exclude_unset=True) == {}:
+        raise HTTPException(
+            status_code=400,
+            detail={"message": "Error updating item", "error": "No data to update"},
+        )
     try:
         db.update(item_id, item_update.dict(exclude_unset=True))
         return {"message": "Item updated"}
     except Exception as e:
+        if str(e) == "Item not found":
+            raise HTTPException(
+                status_code=404,
+                detail={"message": "Error updating item", "error": "Item not found"},
+            )
         status_code = 500
         error_message = {"message": "Error updating item", "error": str(e)}
         raise HTTPException(status_code=status_code, detail=error_message)
