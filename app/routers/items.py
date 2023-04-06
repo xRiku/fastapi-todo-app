@@ -51,6 +51,11 @@ async def delete_item(item_id: uuid.UUID) -> dict:
         db.remove(item_id)
         return {"message": "Item deleted"}
     except Exception as e:
+        if str(e) == "Item not found":
+            raise HTTPException(
+                status_code=404,
+                detail={"message": "Error deleting item", "error": "Item not found"},
+            )
         status_code = 500
         error_message = {"message": "Error deleting item", "error": str(e)}
         raise HTTPException(status_code=status_code, detail=error_message)
